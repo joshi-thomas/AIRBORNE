@@ -71,8 +71,11 @@
             }
 
             if (updateHash) {
-                const url = key === "all" ? window.location.pathname + window.location.search : `#${key}`;
-                history.replaceState(null, "", url);
+                const url = new URL(window.location.href);
+                url.hash = "";
+                if (key === "all") url.searchParams.delete("category");
+                else url.searchParams.set("category", key);
+                history.replaceState(null, "", `${url.pathname}${url.search}`);
             }
         }
 
@@ -91,12 +94,19 @@
             });
         });
 
-        const initialKey = window.location.hash.slice(1);
-        applyFilter(CATEGORY_LABELS[initialKey] ? initialKey : "all", { updateHash: false });
+        const params = new URLSearchParams(window.location.search);
+        const fromQuery = (params.get("category") || "").toLowerCase();
+        const fromHash = window.location.hash.slice(1).toLowerCase();
+        const initialKey = CATEGORY_LABELS[fromQuery]
+            ? fromQuery
+            : CATEGORY_LABELS[fromHash]
+              ? fromHash
+              : "all";
+        applyFilter(initialKey, { updateHash: false });
 
         window.addEventListener("hashchange", () => {
-            const key = window.location.hash.slice(1);
-            if (CATEGORY_LABELS[key]) applyFilter(key, { updateHash: false });
+            const key = window.location.hash.slice(1).toLowerCase();
+            if (CATEGORY_LABELS[key]) applyFilter(key, { updateHash: true });
         });
 
         initCourseModal(modal, grid);
