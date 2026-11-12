@@ -9008,7 +9008,7 @@ html.page-results {
     z-index: 2;
     padding: clamp(1.6rem, 3.5vw, 2.4rem);
     border: 1px solid rgba(14, 58, 123, 0.08);
-    border-radius: 22px;
+    border-radius: 15px;
     background: var(--white);
     box-shadow: 0 22px 48px rgba(10, 29, 69, 0.1);
 }
