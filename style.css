@@ -8993,6 +8993,7 @@ html.page-results {
 
 .results-hero .courses-hero__title {
     max-width: 18ch;
+    margin-inline: auto;
 }
 
 .results-search {
